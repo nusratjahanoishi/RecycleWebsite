@@ -64,9 +64,17 @@ namespace Bachelor_management_software.Controllers
 
                 if (roles.Contains("Admin") || roles.Contains("Rider"))
                 {
-                    TempData["SweetAlertMessage"] = "Admin Page Login Successful!";
-                    TempData["SweetAlertIcon"] = "success";
-                
+                    if (roles.Contains("Admin"))
+                    {
+                        TempData["SweetAlertMessage"] = "Admin Page Login Successful!";
+                        TempData["SweetAlertIcon"] = "success";
+                    }
+                    else
+                    {
+                        TempData["SweetAlertMessage"] = "Rider Page Login Successful!";
+                        TempData["SweetAlertIcon"] = "success";
+                    }
+
                     return RedirectToAction("Index", "Backend");
                 }
                 else

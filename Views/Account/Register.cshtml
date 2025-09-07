@@ -1,0 +1,86 @@
+﻿@model NextUses.Models.Auth.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_FrontendLayout";
+}
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Register</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="middle">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-xl-6 col-lg-7 col-md-10 col-sm-12">
+                <div class="bg-white border p-4 rounded shadow-sm">
+
+                    <div class="mb-3 text-center">
+						<h3>Register</h3>
+                        
+                    </div>
+
+						<form asp-controller="Account" asp-action="Register" method="post" class="border p-3 rounded">
+							<div class="row">
+								<div class="form-group col-md-12">
+									<label asp-for="Name">Full Name *</label>
+									<input type="text" asp-for="Name" class="form-control" placeholder="Full Name">
+									<span asp-validation-for="Name" style="color:red; font-size:14px;"></span>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label asp-for="Email">Email *</label>
+								<input type="email" id="email" asp-for="Email" class="form-control" placeholder="Email*">
+								<span asp-validation-for="Email" style="color:red; font-size:14px;"></span>
+							</div>
+
+							<div class="row">
+								<div class="form-group col-md-6">
+									<label asp-for="Password">Password *</label>
+									<input type="password" asp-for="Password" class="form-control" placeholder="Password*">
+									<span asp-validation-for="Password" style="color:red; font-size:14px;"></span>
+								</div>
+
+								<div class="form-group col-md-6">
+									<label>Confirm Password *</label>
+									<input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password*">
+									<span asp-validation-for="ConfirmPassword" style="color:red; font-size:14px;"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<span style="color:#d9534f; font-weight:bold;">
+									Note: Password must be strong and contain at least
+									<span style="color:#5bc0de;">one uppercase</span>,
+									<span style="color:#5cb85c;">one lowercase</span>,
+									<span style="color:#f0ad4e;">one number</span>, and
+									<span style="color:#d9534f;">one special character</span>.
+								</span>
+
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Sign Up</button>
+							</div>
+						</form>
+				
+
+                    <p class="mt-4 text-center text-muted small">
+                        Already verified?
+                        <a asp-controller="Account" asp-action="Login" class="text-primary fw-bold">Login here</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

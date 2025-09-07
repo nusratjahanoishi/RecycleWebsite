@@ -1,0 +1,87 @@
+﻿@model List<NextUses.Models.Users>
+@using NextUses.Helper;
+
+
+@{
+    ViewData["Title"] = "User List";
+    Layout = "_BackendLayout";
+    int Sl = 1;
+}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">User List</a></li>
+            </ol>
+        </div>
+        <!-- row -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">All User And Change Role</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped verticle-middle table-responsive-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SL</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in Model)
+                                    {
+                                        <tr>
+                                            <td>@Sl</td>
+                                            <td>@user.Name</td>
+                                            <td>@user.Email</td>
+                                            <td>
+                                                @(string.IsNullOrEmpty(user.Phone) ? "Null" : user.Phone)
+                                            </td>
+                                            <td class="text-center">
+                                                @if (user.Role == ConstantData.User
+                                               || user.Role == ConstantData.Rider)
+                                                {
+                                                    <form asp-controller="User" asp-action="Changerole" method="post" class="d-inline">
+                                                        <input type="hidden" name="UserId" value="@user.Id" />
+                                                        <select name="newRole" class="form-select form-select-sm bg-primary text-white"
+                                                                onchange="this.form.submit()">
+                                                            <option disabled selected>Change Role</option>
+                                                            <option value="@ConstantData.User" selected="@(user.Role == "User")"> @ConstantData.User</option>
+                                                            <option value="@ConstantData.Rider" selected="@(user.Role == "Rider")"> @ConstantData.Rider</option>
+                                                        </select>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge rounded-pill bg-success text-white">@user.Role</span>
+                                                }
+                                            </td>
+
+                                            <td class="text-center text-danger">
+                                                <a asp-controller="User" asp-action="Deleteuser" asp-route-id="@user.Id"
+                                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Close">
+                                                    <i class="fa fa-close text-danger"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                        Sl++;
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

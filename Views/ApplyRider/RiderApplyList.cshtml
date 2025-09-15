@@ -1,0 +1,88 @@
+﻿@model IEnumerable<NextUses.Models.RiderApplication>
+@using NextUses.Helper
+@{
+    ViewData["Title"] = "Rider Applications";
+    Layout = "_BackendLayout";
+}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Rider Applications</a></li>
+            </ol>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card shadow-lg rounded-3 border-0">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="card-title mb-0">🏍️ Rider Applications</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered align-middle">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th>Application ID</th>
+                                        <th>Rider Name</th>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Image</th>
+                                        <th>Status</th>
+                                        <th>Applied At</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @foreach (var app in Model)
+                                    {
+                                        <tr>
+                                            <td>#@app.Id.ToString().Substring(0, 8)</td>
+                                            <td>@app.Rider?.Name</td>
+                                            <td>#@app.OrderId.ToString().Substring(0, 8)</td>
+                                            <td>@app.Order?.Product?.Name</td>
+                                            <td>
+                                                <img src="data:image/png;base64,@Convert.ToBase64String(app.Order?.Product?.Image)"
+                                                     width="60" class="img-thumbnail" />
+                                            </td>
+                                            <td class="text-center">
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    @if (app.Status == "Rejected") {
+                                                        <span class="badge bg-danger text-white px-3 py-2">
+                                                            @app.Status
+                                                        </span>
+                                                    }
+                                                    else{
+                                                        <form asp-controller="ApplyRider" asp-action="UpdateRiderStatus" method="post" class="d-inline">
+                                                            <input type="hidden" name="applicationId" value="@app.Id" />
+                                                            <select name="newStatus" class="form-select form-select-sm @(app.Status == "Pending" ? "bg-warning text-white" : app.Status == "Approved" ? "bg-success text-white" : app.Status == "Rejected" ? "bg-danger text-white" : "bg-secondary text-white")"
+                                                                    onchange="this.form.submit()">
+                                                                <option value="Pending" selected="@(app.Status == "Pending")">Pending</option>
+                                                                <option value="Approved" selected="@(app.Status == "Approved")">Approved</option>
+                                                                <option value="Rejected" selected="@(app.Status == "Rejected")">Rejected</option>
+                                                            </select>
+                                                        </form>
+                                                    }
+                                                   
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge @(app.Status == "Pending" ? "bg-warning" : app.Status == "Approved" ? "bg-success" : app.Status == "Rejected" ? "bg-danger" : "bg-secondary") text-white px-3 py-2">
+                                                        @app.Status
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td>@app.AppliedAt.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Row -->
+    </div>
+</div>

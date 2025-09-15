@@ -1,0 +1,116 @@
+﻿@model List<NextUses.Models.Product>
+@using NextUses.Helper;
+
+@{
+    ViewData["Title"] = "Product List";
+    Layout = "_BackendLayout";
+    int Sl = 1;
+}
+
+<div class="content-body">
+    <div class="container-fluid">
+
+        <!-- Breadcrumb -->
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Product List</a></li>
+            </ol>
+        </div>
+
+        <!-- Row: Form + List -->
+        <div class="row">
+            <!-- Right 6 cols: Category List -->
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Product List</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>User</th>
+                                    <th>Role</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Activity</th>
+                                    <th>Image</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if (Model != null && Model.Any())
+                                {
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@Sl</td>
+                                            <td>@item.Users?.Name</td>
+                                            <td style="color:@(item.Users?.Role == "Admin" ? "red" : item.Users?.Role == "Rider" ? "blue" : "green")">
+                                                @item.Users?.Role
+                                            </td>
+
+                                            <td>@item.Name</td>
+                                            <td>@item.Category?.Name</td>
+                                            <td>@item.Price?.ToString("0.00")</td>
+
+                                            <td class="text-center">
+                                                <form asp-controller="Product" asp-action="Statuschange" method="post" class="d-inline">
+                                                    <input type="hidden" name="ProductId" value="@item.Id" />
+                                                    <select name="StatusType" class="form-select form-select-sm  @(item.StatusType == ConstantData.Active ?"bg-success text-white" : item.StatusType ==ConstantData.Deactive ? "bg-warning text-white": "bg-secondary text-white")"
+                                                            onchange="this.form.submit()">
+                                                        <option value="@ConstantData.Active" selected="@(item.StatusType == ConstantData.Active)">@ConstantData.Active </option>
+                                                        <option value="@ConstantData.Deactive" selected="@(item.StatusType == ConstantData.Deactive)">@ConstantData.Deactive </option>
+                                                    </select>
+                                                </form>
+                                            </td>
+                                            <td style="color:@(item.ProductStatus == "Sell" ? "green" : item.ProductStatus == "Donate" ? "blue" :item.ProductStatus == "Exchange" ? "orange" : "black")">
+                                                @item.ProductStatus
+                                            </td>
+
+                                            <td>
+                                                @if (item.Image != null)
+                                                {
+                                                    <img src="data:image/png;base64,@Convert.ToBase64String(item.Image)" width="60" />
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger"
+                                                       onclick="return confirm('Are you sure you want to delete this product?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        Sl++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" class="text-center text-danger">No products found</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End Row -->
+
+    </div> <!-- End Container -->
+</div> <!-- End Content Body -->

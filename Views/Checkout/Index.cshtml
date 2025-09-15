@@ -1,0 +1,146 @@
+﻿@model NextUses.Models.ViewModel.CheckoutPageViewModel
+@using NextUses.Helper;
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "Checkout page";
+    Layout = "_FrontendLayout";
+}
+<div class="clearfix"></div>
+
+<!-- ======================= Top Breadcrubms ======================== -->
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Support</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======================= Product Detail ======================== -->
+<section class="middle">
+    <div class="container mt-4">
+        <h2 class="mb-4 text-center">Checkout</h2>
+
+        <div class="row">
+            <!-- Product Info -->
+            <div class="col-md-5">
+                <div class="card shadow-sm mb-3">
+                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Product.Image)"
+                         class="card-img-top img-fluid mt-3"
+                         style="max-height:250px;object-fit:contain;" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Product.Name</h5>
+                        <p class="card-text">
+                            <strong>Price:</strong> <span class="text-success">@Model.Product.Price ৳</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing & Delivery Form -->
+            <div class="col-md-7">
+                <div class="card shadow-sm p-4">
+                    <h4 class="mb-3">Billing & Delivery Info</h4>
+
+                    <form asp-action="PlaceOrder" asp-controller="Checkout" method="post">
+                        @Html.AntiForgeryToken()
+                        <input asp-for="Order.ProductId" type="hidden" />
+                        
+                        <!-- Hidden Order Status -->
+                        <input type="hidden" asp-for="Order.Status" value="@NextUses.Helper.Checkoutinfo.Pending" />
+
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Order.FullName" class="form-label"></label>
+                                <input asp-for="Order.FullName" class="form-control" />
+                                <span asp-validation-for="Order.FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Order.MobileNumber" class="form-label"></label>
+                                <input asp-for="Order.MobileNumber" class="form-control" />
+                                <span asp-validation-for="Order.MobileNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Order.City" class="form-label"></label>
+                                <input asp-for="Order.City" class="form-control" />
+                                <span asp-validation-for="Order.City" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Order.Country" class="form-label"></label>
+                                <input asp-for="Order.Country" class="form-control" />
+                                <span asp-validation-for="Order.Country" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Order.PaymentMethod" class="form-label">Payment Method</label>
+                                <select asp-for="Order.PaymentMethod" class="form-select" id="paymentMethod">
+                                    <option value="">-- Select Payment Method --</option>
+                                    @foreach (var method in Checkoutinfo.GetPaymentTypeSelectList())
+                                    {
+                                        <option value="@method.Value">@method.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Order.PaymentMethod" class="text-danger"></span>
+                            </div>
+
+                            <!-- Tax ID Field, hidden by default -->
+                            <div class="col-md-6 mb-3" id="taxIdDiv" style="display:none;">
+                                <label asp-for="Order.TaxId" class="form-label">Tax ID</label>
+                                <input asp-for="Order.TaxId" class="form-control" placeholder="Enter Tax ID" />
+                                <span asp-validation-for="Order.TaxId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Order.AdditionalInfo" class="form-label"></label>
+                            <textarea asp-for="Order.AdditionalInfo" class="form-control" placeholder="123, Road Name, Block A"></textarea>
+                        </div>
+
+                       
+
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-dark px-5 py-2">
+                                <i class="lni lni-shopping-basket"></i> Place Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const paymentSelect = document.getElementById("paymentMethod");
+        const taxDiv = document.getElementById("taxIdDiv");
+
+        function toggleTaxField() {
+            if (paymentSelect.value && paymentSelect.value !== "Cash On Delivery") {
+                taxDiv.style.display = "block";
+            } else {
+                taxDiv.style.display = "none";
+                document.getElementById("Order_TaxId").value = ""; // clear TaxId if hidden
+            }
+        }
+
+        paymentSelect.addEventListener("change", toggleTaxField);
+        toggleTaxField(); // run on page load
+    });
+</script>

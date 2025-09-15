@@ -17,5 +17,8 @@ namespace NextUses.Models
 
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
+        public ICollection<Product>? Products { get; set; } = new List<Product>();
+        public ICollection<Billing>? Billings { get; set; } = new List<Billing>();
+        public ICollection<RiderApplication>? RiderApplications { get; set; } = new List<RiderApplication>();
     }
 }

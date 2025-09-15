@@ -1,0 +1,58 @@
+﻿@model IEnumerable<NextUses.Models.Order>
+@using NextUses.Helper;
+
+@{
+    ViewData["Title"] = "Order List";
+    Layout = "_FrontendLayout";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-center">My Orders</h2>
+
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Product?.Name</td>
+                    <td>@order.Product?.Price ৳</td>
+                    <td>@order.PaymentMethod</td>
+                    <td>
+                        @if (order.Status == Checkoutinfo.Pending)
+                        {
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        }
+                        else if (order.Status == Checkoutinfo.AssignRider)
+                        {
+                            <span class="badge bg-primary">Assign Rider</span>
+                        } 
+                        else if (order.Status == Checkoutinfo.Completed)
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }  
+                        else if (order.Status == Checkoutinfo.RejectedRider)
+                        {
+                            <span class="badge bg-danger">Rejected Rider</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Cancelled</span>
+                        }
+                    </td>
+                    <td>@order.OrderDate.ToString("dd MMM yyyy")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

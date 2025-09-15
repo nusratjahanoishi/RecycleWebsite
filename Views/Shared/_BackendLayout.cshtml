@@ -1,11 +1,20 @@
-﻿@using NextUses.Helper;
-@using System.Security.Claims;
+﻿@using NextUses.Helper
+@using System.Security.Claims
+@using NextUses.Models   // যেখানে Users, GeneralSetting আছে
 @inject NextUses.Data.NextUsesDB DbContext
 
 @{
-	var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-	var currentUser = DbContext.Users.FirstOrDefault(u => u.Id == userId);
+	Users currentUser = null;
+	if (User.Identity.IsAuthenticated)
+	{
+		var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+		currentUser = DbContext.Users?.FirstOrDefault(u => u.Id == userId);
+	}
+
+	var setting = DbContext.GeneralSettings?.FirstOrDefault() ?? new GeneralSetting();
 }
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +22,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Next uses home page</title>
+	<title>@(setting.SiteName??"Not Available")</title>
 	<!-- Favicon icon -->
 	<link rel="icon" type="image/png" sizes="16x16" href="~/asset/backend/images/logo.png">
 	<link rel="stylesheet" href="~/asset/backend/vendor/chartist/css/chartist.min.css">
@@ -21,6 +30,7 @@
 	<link href="~/asset/backend/vendor/owl-carousel/owl.carousel.css" rel="stylesheet">
 	<link href="~/asset/backend/css/style.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -46,11 +56,30 @@
 		<!--**********************************
 			Nav header start
 		***********************************-->
-		<div class="nav-header">
-			<a href="index.html" class="brand-logo">
-				<img class="logo-abbr" src="~/asset/backend/images/logo.png" alt="">
-				<img class="logo-compact" src="~/asset/backend/images/logo-text.png" alt="">
-				<img class="brand-title" src="~/asset/backend/images/logo-text.png" alt="">
+		<div class="nav-header d-flex align-items-center justify-content-between sticky-top bg-white border-bottom p-2">
+			<a asp-controller="Backend" asp-action="Index" class="brand-logo d-flex align-items-center">
+				@if (setting?.Logo != null)
+				{
+					<!-- Desktop logo -->
+					<img class="d-none d-md-inline-block img-fluid"
+						 src="data:image/png;base64,@Convert.ToBase64String(setting.Logo)"
+						 alt="Logo" style="max-height:50px; width:auto;" />
+
+					<!-- Mobile logo -->
+					<img class="d-inline-block d-md-none img-fluid"
+						 src="data:image/png;base64,@Convert.ToBase64String(setting.Logo)"
+						 alt="Logo Compact" style="max-height:50px; max-width:300px; width:100%;" />
+				}
+				else
+				{
+					<img class="d-none d-md-inline-block img-fluid"
+						 src="~/asset/backend/images/logo.png"
+						 alt="Default Logo" style="max-height:50px; width:auto;" />
+
+					<img class="d-inline-block d-md-none img-fluid"
+						 src="~/asset/backend/images/logo-text.png"
+						 alt="Default Logo Compact" style="max-height:50px; max-width:300px; width:100%;" />
+				}
 			</a>
 
 			<div class="nav-control">
@@ -59,6 +88,8 @@
 				</div>
 			</div>
 		</div>
+
+
 		<!--**********************************
 			Nav header end
 		***********************************-->
@@ -89,23 +120,42 @@
 							
 							<li class="nav-item dropdown header-profile">
 								<a class="nav-link" href="javascript:void(0)" role="button" data-toggle="dropdown">
-									<img src="images/profile/17.jpg" width="20" alt="" />
+									<img src="@(currentUser?.Image != null ? "data:image/png;base64," + Convert.ToBase64String(currentUser.Image) : Url.Content("~/asset/backend/images/default-user.png"))"
+										 width="20" alt="User Image" />
 									<div class="header-info">
 										<span class="text-black"><strong>@currentUser?.Name</strong></span>
 										<p class="fs-12 mb-0">@currentUser?.Role</p>
 									</div>
 								</a>
-								<div class="dropdown-menu dropdown-menu-right">
-									<a href="./app-profile.html" class="dropdown-item ai-icon">
-										<svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-										<span class="ml-2">Profile </span>
+								<div class="dropdown-menu dropdown-menu-right p-0">
+
+									<!-- Profile Link -->
+									<a asp-controller="ProfileChange" asp-action="Information" asp-route-id="@currentUser.Id" class="dropdown-item d-flex align-items-center">
+										<svg xmlns="http://www.w3.org/2000/svg" class="text-primary me-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+											<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+											<circle cx="12" cy="7" r="4"></circle>
+										</svg>
+										<span class="flex-grow-1">Profile</span>
 									</a>
-								
-									<a href="./page-login.html" class="dropdown-item ai-icon">
-										<svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-										<span class="ml-2">Logout </span>
-									</a>
+
+									<!-- Divider -->
+									<div class="dropdown-divider"></div>
+
+									<!-- Logout Button -->
+									<form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+										@Html.AntiForgeryToken()
+										<button type="submit" class="dropdown-item d-flex align-items-center text-danger p-2 " style=" margin-left: 17px;background: none; border: none; width: 100%;">
+											<svg xmlns="http://www.w3.org/2000/svg" class="text-danger me-2" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+												<polyline points="16 17 21 12 16 7"></polyline>
+												<line x1="21" y1="12" x2="9" y2="12"></line>
+											</svg>
+											<span> Logout</span>
+										</button>
+									</form>
+
 								</div>
+
 							</li>
 						</ul>
 					</div>
@@ -123,51 +173,79 @@
 				<ul class="metismenu" id="menu">
 					<li>
 						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-381-networking"></i>
+							<i class="fa fa-home"></i>
 							<span class="nav-text">Dashboard</span>
 						</a>
 						<ul aria-expanded="false">
-							<li><a href="index.html">Dashboard</a></li>
-						
+							<li><a asp-controller="Backend" asp-action="Index">Dashboard</a></li>
 						</ul>
 					</li>
 					@if (User.IsInRole(ConstantData.Admin))
 					{
-					<li>
+						<li>
 							<a class="has-arrow ai-icon" aria-expanded="false">
-							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">All User</span>
-						</a>
-						<ul aria-expanded="false">
+								<i class="fa fa-users"></i>
+								<span class="nav-text">All User</span>
+							</a>
+							<ul aria-expanded="false">
 								<li><a asp-controller="User" asp-action="List">All User List</a></li>
 								<li><a asp-controller="User" asp-action="Riderlist">Rider List</a></li>
+							</ul>
+						</li>
 
-						</ul>
-					</li>
+						<li>
+							<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+								<i class="fa fa-list"></i>
+								<span class="nav-text">Category</span>
+							</a>
+							<ul aria-expanded="false">
+								<li><a asp-controller="Category" asp-action="Create">Add & List</a></li>
+							</ul>
+						</li>
+
+						<li>
+							<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+								<i class="fa fa-cube"></i>
+								<span class="nav-text">Product</span>
+							</a>
+							<ul aria-expanded="false">
+								<li><a asp-controller="Product" asp-action="Create">Add</a></li>
+								<li><a asp-controller="Product" asp-action="List">List</a></li>
+							</ul>
+						</li>
+
+
+						<li>
+							<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+								<i class="fa fa-cog"></i>
+								<span class="nav-text">Genarel Setting </span>
+							</a>
+							<ul aria-expanded="false">
+								<li><a asp-controller="SiteSetting" asp-action="Setting">Genarel Setting</a></li>
+							</ul>
+						</li>
 					}
 					<li>
 						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-381-television"></i>
-							<span class="nav-text">Category</span>
+							<i class="fa fa-shopping-cart"></i>
+							<span class="nav-text">Order</span>
 						</a>
 						<ul aria-expanded="false">
-							<li><a href="./app-profile.html">Profile</a></li>
-							<li>
-								<a class="has-arrow" href="javascript:void()" aria-expanded="false">Product</a>
-								<ul aria-expanded="false">
-									<li><a href="./ecom-product-grid.html">Product Grid</a></li>
-									<li><a href="./ecom-product-list.html">Product List</a></li>
-									<li><a href="./ecom-product-detail.html">Product Details</a></li>
-									<li><a href="./ecom-product-order.html">Order</a></li>
-									<li><a href="./ecom-checkout.html">Checkout</a></li>
-									<li><a href="./ecom-invoice.html">Invoice</a></li>
-									<li><a href="./ecom-customers.html">Customers</a></li>
-								</ul>
-							</li>
+							<li><a asp-controller="Order" asp-action="OrderList">Order List</a></li>
 						</ul>
 					</li>
-					
+
+					<li>
+						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="fa fa-id-card"></i>
+							<span class="nav-text">Apply Rider List</span>
+						</a>
+						<ul aria-expanded="false">
+							<li><a asp-controller="ApplyRider" asp-action="RiderApplyList">Apply List</a></li>
+						</ul>
+					</li>
 				</ul>
+
 			</div>
 		</div>
 		<!--**********************************
@@ -185,7 +263,7 @@
 		***********************************-->
 		<div class="footer">
 			<div class="copyright">
-				<p>Copyright © Developed by <a href="http://NextUse.com/" target="_blank">NextUse</a> 2025</p>
+				<p>@(setting.FooterText ?? "Not Available")</p>
 			</div>
 		</div>
 		<!--**********************************

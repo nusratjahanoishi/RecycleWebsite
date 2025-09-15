@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NextUses.Data;
 
@@ -11,9 +12,11 @@ using NextUses.Data;
 namespace NextUses.Migrations
 {
     [DbContext(typeof(NextUsesDB))]
-    partial class NextUsesDBModelSnapshot : ModelSnapshot
+    [Migration("20250915063743_allDB")]
+    partial class allDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

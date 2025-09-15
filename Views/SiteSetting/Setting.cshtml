@@ -1,0 +1,86 @@
+﻿@model NextUses.Models.GeneralSetting
+@{
+    ViewData["Title"] = "General Setting";
+
+    Layout = "_BackendLayout"; 
+    }
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">General Setting</a></li>
+            </ol>
+        </div>
+
+        <div class="container mt-4">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0 text-white">General Setting</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Setting" asp-controller="SiteSetting" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SiteName" class="form-label fw-bold"></label>
+                                <input asp-for="SiteName" class="form-control" placeholder="Enter site name" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FooterText" class="form-label fw-bold"></label>
+                                <input asp-for="FooterText" class="form-control" placeholder="Enter footer text" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="SiteDescription" class="form-label fw-bold"></label>
+                                <textarea asp-for="SiteDescription" class="form-control" rows="3" placeholder="Enter site description"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ContactEmail" class="form-label fw-bold"></label>
+                                <input asp-for="ContactEmail" type="email" class="form-control" placeholder="Enter contact email" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="ContactPhone" class="form-label fw-bold"></label>
+                                <input asp-for="ContactPhone" class="form-control" placeholder="Enter contact phone" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="Address" class="form-label fw-bold"></label>
+                                <input asp-for="Address" class="form-control" placeholder="Enter address" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Logo</label><br />
+                                @if (Model.Logo != null)
+                                {
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Logo)"
+                                         alt="Logo" width="100"
+                                         class="mb-2 rounded border shadow-sm" />
+                                }
+                                <input asp-for="LogoFile" type="file" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fa fa-save me-1"></i> Save Settings
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

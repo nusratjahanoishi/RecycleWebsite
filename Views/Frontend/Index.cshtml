@@ -1,4 +1,5 @@
-﻿@{
+﻿@model NextUses.Models.ViewModel.FrontendModel
+@{
 	ViewData["Title"] = "Home page";
 	Layout = "_FrontendLayout";
 }
@@ -12,12 +13,10 @@
 
 					<div class="killore--block-link-content">
 						<ul>
-							<li><a href="javascript:void(0);"><i class="fas fa-tshirt"></i>Fashion</a></li>
-							<li><a href="javascript:void(0);"><i class="fas fa-tv"></i>Electronics</a></li>
-							<li><a href="javascript:void(0);"><i class="fas fa-gift"></i>Gifts & Cards</a></li>
-							<li><a href="javascript:void(0);"><i class="fas fa-leaf"></i>Home Decoration</a></li>
-							<li><a href="javascript:void(0);"><i class="fas fa-headphones-alt"></i>Headphones</a></li>
-							<li><a href="javascript:void(0);"><i class="fas fa-football-ball"></i>Sports Items</a></li>
+							@foreach (var category in Model.Categories)
+							{
+								<li><a href="javascript:void(0);">@category.Name</a></li>
+							}
 						</ul>
 					</div>
 				</div>
@@ -122,233 +121,44 @@
 		</div>
 
 		<div class="row align-items-center rows-products">
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
+			@foreach (var product in Model.Products)
+			{
+				<!-- Single -->
+				<div class="col-xl-3 col-lg-4 col-md-6 col-6">
+					<div class="product_grid card b-0">
+						<div class="badge bg-red text-white position-absolute ft-regular ab-left text-upper">@product.ProductStatus</div>
 					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/9.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">Mobiles</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Killore iPhone 12</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$99 - $129</span></div>
+							<div class="shop_thumb position-relative">
+								<a class="card-img-top d-block overflow-hidden" asp-controller="Frontend"
+								   asp-action="Productdetails" asp-route-id="@product.Id">
+									<img class="img-fluid"
+										 style="width:2500px; height:250px; object-fit:cover;"
+										 src="data:image/png;base64,@Convert.ToBase64String(product.Image)"
+										 alt="@product.Name" />
+								</a>
 							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-					<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-40%</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/10.png" alt="..."></a>
-						</div>
 					</div>
 					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
 						<div class="text-left">
 							<div class="text-left">
-								<div class="elso_titl"><span class="small">Headphones</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Killore Headphone</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$129</span></div>
+									<div class="elso_titl"><span class="small">@product.Category.Name</span></div>
+								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">@product.Name</a></h5>
+								
+								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">TK- @product.Price</span></div>
 							</div>
 						</div>
+							<div class="text-right">
+								<div class="text-right">
+									<h3 class="fs-md mb-0 lh-1 mb-1 mt-3"><a asp-controller="Frontend" 
+										asp-action="Productdetails" asp-route-id="@product.Id" class="btn btn-primary btn-sm px-4 py-2">Details</a></h3>
+								</div>
+							</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/11.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">Mobiles</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Ziome iPhone 11</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$99 - $129</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
-					<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-55%</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/4.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">Mobiles</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Pillos Android Phone</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$50 - $149</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-					<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-30%</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/5.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">Camera</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Phot Video Camera</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$199</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/6.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">Headphone</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">New Croft Headphone</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$110 - $600</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/7.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">TV/LCD</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">32 Inch Sony TV</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$99 - $110</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Single -->
-			<div class="col-xl-3 col-lg-4 col-md-6 col-6">
-				<div class="product_grid card b-0">
-					<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
-					<div class="badge bg-danger text-white position-absolute ft-regular ab-right text-upper">-60%</div>
-					<div class="card-body p-0">
-						<div class="shop_thumb position-relative">
-							<a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img class="card-img-top" src="~/asset/frontend/img/shop/8.png" alt="..."></a>
-						</div>
-					</div>
-					<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
-						<div class="text-left">
-							<div class="text-left">
-								<div class="elso_titl"><span class="small">Headphone</span></div>
-								<h5 class="fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html">Xiomi 13 Headphone</a></h5>
-								<div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star filled"></i>
-									<i class="fas fa-star"></i>
-								</div>
-								<div class="elis_rty"><span class="ft-bold text-dark fs-sm">$119</span></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			}
+			
 
 		</div>
 
@@ -378,89 +188,15 @@
 		</div>
 
 		<div class="row align-items-center justify-content-center">
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/headphones.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Headphones</a></h6></div>
+			@foreach (var category in Model.Categories)
+			{
+				<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
+					<div class="cats_side_wrap text-center mx-auto mb-3">
+						<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="data:image/png;base64,@Convert.ToBase64String(category.Image)" class="circle " width="100" alt="@category.Name"></a></div></div>
+					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">@category.Name</a></h6></div>
 				</div>
 			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/watch.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Watches</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/washing-machine.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Washing Machine</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/cell-phone.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">iPhones</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/safety-goggles.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Goggles</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/camera.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Video Camera</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/fashion.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Men's Wear</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/tshirt.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Kid's Wear</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/accessories.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Accessories</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/sneakers.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Men's Shoes</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/television.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Television</a></h6></div>
-				</div>
-			</div>
-
-			<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
-				<div class="cats_side_wrap text-center mx-auto mb-3">
-					<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2 border"><a href="javascript:void(0);" class="d-block"><img src="~/asset/frontend/img/pant.png" class="img-fluid" width="40" alt=""></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">Men's Pants</a></h6></div>
-				</div>
-			</div>
+			}
 		</div>
 
 	</div>

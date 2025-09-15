@@ -1,0 +1,171 @@
+﻿@model IEnumerable<NextUses.Models.Order>
+@using NextUses.Helper
+@{
+    ViewData["Title"] = "Order List";
+    Layout = "_BackendLayout";
+}
+<div class="content-body">
+    <div class="container-fluid">
+
+        <!-- Breadcrumb -->
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Order List</a></li>
+            </ol>
+        </div>
+
+        <!-- Row: Order List -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card shadow-lg rounded-3 border-0">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="card-title mb-0">📦 Order List</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered align-middle">
+                                    <thead class="table-dark text-center">
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>User</th>
+                                            <th>Product</th>  
+                                            <th>Type</th>  
+                                            <th>Total</th>
+                                            <th>Image</th>
+                                            <th>Status</th>
+                                            <th>Apply</th>
+                                            <th>Mobile</th>
+                                            <th>AdditionalInfo</th>
+                                            <th>City</th>
+                                            <th>Payment Method</th>
+                                            <th>Tax ID</th>
+                                            <th>Order Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @foreach (var order in Model)
+                                        {
+                                            <tr>
+                                                <td><span class="fw-bold">#@order.Id.ToString().Substring(0, 8)</span></td>
+                                                <td>@order.Billing?.Users?.Name</td>
+                                                <td>@order.Product?.Name</td>
+                                                <td>@order.Product?.ProductStatus</td>
+                                                <td>@order.Product?.Price</td>
+                                                <td>
+                                                    <img src="data:image/png;base64,@Convert.ToBase64String(order.Product?.Image)"
+                                                         width="60" class="img-thumbnail" />
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (User.IsInRole("Admin"))
+                                                    {
+                                                        @if (order.Status == Checkoutinfo.RejectedRider || order.Status == Checkoutinfo.Cancelled)
+                                                        {
+                                                            <span class="badge bg-danger text-white   px-2 py-1">@order.Status </span>
+                                                        }
+                                                        else{
+                                                            <form asp-controller="Order" asp-action="OrderList" method="post" class="d-inline">
+                                                                <input type="hidden" name="OrderId" value="@order.Id" />
+                                                                <select name="newStatus" class="form-select form-select-sm  @(order.Status == Checkoutinfo.Pending ? "bg-warning text-white" :order.Status == Checkoutinfo.RejectedRider ? "bg-danger text-white": order.Status == Checkoutinfo.Completed ? "bg-success text-white" : order.Status == Checkoutinfo.Cancelled ? "bg-danger text-white" : "bg-secondary text-white")"
+                                                                        onchange="this.form.submit()">
+                                                                    @foreach (var status in Checkoutinfo.GetPaymentstatusSelectList())
+                                                                    {
+                                                                        <option value="@status.Value" selected="@(order.Status == status.Value)">
+                                                                            @status.Text
+                                                                        </option>
+                                                                    }
+                                                                </select>
+                                                            </form>
+                                                        }
+                                                     
+                                                    }
+                                                    else if (User.IsInRole("Rider"))
+                                                    {
+                                                        <span class="badge @(order.Status == Checkoutinfo.Pending ? "bg-warning" :order.Status == Checkoutinfo.RejectedRider ? "bg-danger" : order.Status == Checkoutinfo.Completed ? "bg-success" : order.Status == Checkoutinfo.Cancelled ? "bg-danger" : "bg-secondary") text-white px-3 py-2">
+                                                            @order.Status
+                                                        </span>
+                                                    }
+                                                </td>
+
+                                                <td>
+                                                    @if (order.Status == "Pending" && User.IsInRole("Rider"))
+                                                    {
+                                                        <form asp-controller="Order" asp-action="ApplyForOrder" method="post">
+                                                            <input type="hidden" name="OrderId" value="@order.Id" />
+                                                            <button type="submit" class="btn btn-sm btn-warning">
+                                                                <i class="fa fa-plus"></i> Apply
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <span >
+                                                            @{
+                                                                // OrderId দিয়ে RiderApplication খুঁজে নিন
+                                                                var riderApplication = order.RiderApplications.FirstOrDefault();
+                                                                var status = riderApplication?.Status ?? "Pending";
+                                                                var riderName = riderApplication?.Rider?.Name ?? "No Rider";
+
+                                                                // Status অনুযায়ী রঙ সেট করা
+                                                                string badgeClass = status switch
+                                                                {
+                                                                    "Pending" => "bg-warning text-white",
+                                                                    "Approved" => "bg-success text-white",
+                                                                    "Rejected" => "bg-danger text-white",
+                                                                    _ => "bg-info text-white"
+                                                                };
+                                                            }
+                                                            <span class="badge @badgeClass px-2 py-1"> @riderName : @status</span>
+                                                           
+                                                        </span>
+                                                    }
+
+                                                </td>
+
+
+                                                <td>@order.Billing?.MobileNumber</td>
+                                                <td>@order.Billing?.AdditionalInfo</td>
+                                                <td>@order.Billing?.City</td>
+
+
+                                                <!-- Payment Method -->
+                                                <td>
+                                                    @if (order.PaymentMethod == Checkoutinfo.COD)
+                                                    {
+                                                        <span class="badge bg-secondary text-white px-3 py-2">COD</span>
+                                                    }
+                                                    else if (order.PaymentMethod == Checkoutinfo.Bkash)
+                                                    {
+                                                        <span class="badge bg-success text-white px-3 py-2">Bkash</span>
+                                                    }
+                                                    else if (order.PaymentMethod == Checkoutinfo.Nagad)
+                                                    {
+                                                        <span class="badge bg-warning text-white px-3 py-2">Nagad</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-info text-white px-3 py-2">@order.PaymentMethod</span>
+                                                    }
+                                                </td>
+
+                                                <!-- TaxId -->
+                                                <td> <span class="badge bg-blue text-white px-3 py-2">@(string.IsNullOrEmpty(order.TaxId) ? "Null" : order.TaxId)</span></td>
+                                               
+
+                                               <td> <span class="badge bg-success text-white px-3 py-2">@order.OrderDate.ToString("dd-MMM-yyyy hh:mm tt")</span></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Row -->
+
+    </div> <!-- End Container -->
+</div> <!-- End Content Body -->

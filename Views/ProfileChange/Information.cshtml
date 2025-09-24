@@ -16,78 +16,206 @@
         }
     }
 }
+
 <div class="content-body">
     <div class="container-fluid">
+        <!-- Page Header -->
         <div class="page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Profile Change</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)" class="text-dark fw-semibold">Profile Change</a></li>
             </ol>
         </div>
 
-        <div class="container mt-4">
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0 text-white">Profile Information</h4>
-                </div>
-                <div class="card-body p-4">
-                    <form asp-action="Information" asp-controller="ProfileChange" method="post" enctype="multipart/form-data">
-                        <input type="hidden" asp-for="Id" />
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Name" class="form-label fw-bold"></label>
-                                <input asp-for="Name" class="form-control" placeholder="Enter your full name" />
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10">
+                <!-- Profile Card -->
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-header bg-gradient-primary text-white py-4 rounded-top-4">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-user-edit fa-2x me-3"></i>
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Address" class="form-label fw-bold"></label>
-                                <input asp-for="Address" class="form-control" placeholder="Enter your address" />
+                            <div class="flex-grow-1">
+                                <h3 class="mb-0 text-white">Profile Information</h3>
+                                <p class="mb-0 opacity-75">Update your personal details and preferences</p>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Gender" class="form-label fw-bold"></label>
-                                <select asp-for="Gender" class="form-select">
-                                    <option value="">-- Select Gender --</option>
-                                    <option value="Male" selected="@(Model.Gender == "Male")">Male</option>
-                                    <option value="Female" selected="@(Model.Gender == "Female")">Female</option>
-                                </select>
+                    <div class="card-body p-5">
+                        <form asp-action="Information" asp-controller="ProfileChange" method="post" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="Id" />
+
+                            <!-- Personal Information Section -->
+                            <div class="mb-5">
+                                <h5 class="fw-semibold text-primary mb-4 pb-2 border-bottom">
+                                    <i class="fas fa-user me-2"></i>Personal Information
+                                </h5>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="Name" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0">
+                                                <i class="fas fa-user text-primary"></i>
+                                            </span>
+                                            <input asp-for="Name" class="form-control border-start-0 ps-2" placeholder="Enter your full name" />
+                                        </div>
+                                        <span asp-validation-for="Name" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="Address" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0">
+                                                <i class="fas fa-map-marker-alt text-primary"></i>
+                                            </span>
+                                            <input asp-for="Address" class="form-control border-start-0 ps-2" placeholder="Enter your address" />
+                                        </div>
+                                        <span asp-validation-for="Address" class="text-danger small"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="Gender" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0">
+                                                <i class="fas fa-venus-mars text-primary"></i>
+                                            </span>
+                                            <select asp-for="Gender" class="form-select border-start-0 ps-2">
+                                                <option value="">-- Select Gender --</option>
+                                                <option value="Male" selected="@(Model.Gender == "Male")">Male</option>
+                                                <option value="Female" selected="@(Model.Gender == "Female")">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="DateOfBirth" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0">
+                                                <i class="fas fa-calendar-alt text-primary"></i>
+                                            </span>
+                                            <input asp-for="DateOfBirth" type="date" class="form-control border-start-0 ps-2" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="DateOfBirth" class="form-label fw-bold"></label>
-                                <input asp-for="DateOfBirth" type="date" class="form-control" />
-                            </div>
-                        </div>
+                            <!-- Contact & Profile Section -->
+                            <div class="mb-5">
+                                <h5 class="fw-semibold text-primary mb-4 pb-2 border-bottom">
+                                    <i class="fas fa-address-book me-2"></i>Contact & Profile
+                                </h5>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Phone" class="form-label fw-bold"></label>
-                                <input asp-for="Phone" class="form-control" placeholder="Enter your phone number" />
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label asp-for="Phone" class="form-label fw-semibold"></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0">
+                                                <i class="fas fa-phone text-primary"></i>
+                                            </span>
+                                            <input asp-for="Phone" class="form-control border-start-0 ps-2" placeholder="Enter your phone number" />
+                                        </div>
+                                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label fw-semibold">Profile Picture</label>
+                                        <div class="d-flex align-items-center">
+                                            @if (Model.Image != null)
+                                            {
+                                                <div class="position-relative me-3">
+                                                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)"
+                                                         alt="Profile Image" width="80"
+                                                         class="rounded-circle border shadow-sm profile-image" />
+                                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-3 border-white rounded-circle"></span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="me-3">
+                                                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border shadow-sm" style="width: 80px; height: 80px;">
+                                                        <i class="fas fa-user text-muted fa-2x"></i>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div class="flex-grow-1">
+                                                <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+                                                <small class="text-muted">Recommended: Square image, max 2MB</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-bold">Profile Picture</label><br />
-                                @if (Model.Image != null)
-                                {
-                                    <img src="data:image/png;base64,@Convert.ToBase64String(Model.Image)"
-                                         alt="Profile Image" width="80"
-                                         class="mb-2 rounded-circle border shadow-sm" />
-                                }
-                                <input asp-for="ImageFile" type="file" class="form-control" />
+                            <!-- Submit Button -->
+                            <div class="text-end pt-3 border-top">
+                                <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill fw-semibold">
+                                    <i class="fas fa-save me-2"></i> Update Profile
+                                </button>
                             </div>
-                        </div>
-
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary px-4">
-                                <i class="fa fa-save me-1"></i> Update Profile
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+        }
+
+    .form-control, .form-select {
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+    .input-group-text {
+        background-color: #f8fafc !important;
+        border-color: #e2e8f0;
+    }
+
+    .profile-image {
+        transition: transform 0.3s ease;
+    }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    .rounded-top-4 {
+        border-top-left-radius: 1rem !important;
+        border-top-right-radius: 1rem !important;
+    }
+
+    .border-bottom {
+        border-bottom: 2px solid #e2e8f0 !important;
+    }
+
+    .border-top {
+        border-top: 2px solid #e2e8f0 !important;
+    }
+</style>

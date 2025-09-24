@@ -11,7 +11,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Pages</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Register</li>
+                        <li class="breadcrumb-item active" aria-current="page">Register</li>
                     </ol>
                 </nav>
             </div>
@@ -21,66 +21,201 @@
 <section class="middle">
     <div class="container">
         <div class="row justify-content-center">
-
-            <div class="col-xl-6 col-lg-7 col-md-10 col-sm-12">
-                <div class="bg-white border p-4 rounded shadow-sm">
-
-                    <div class="mb-3 text-center">
-						<h3>Register</h3>
-                        
+            <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10">
+                <div class="card border-0 shadow-lg rounded-lg">
+                    <div class="card-header bg-gradient-primary text-white text-center py-4">
+                        <h3 class="mb-0 font-weight-bold">Create Account</h3>
+                        <p class="mb-0 opacity-75">Join us today</p>
                     </div>
 
-						<form asp-controller="Account" asp-action="Register" method="post" class="border p-3 rounded">
-							<div class="row">
-								<div class="form-group col-md-12">
-									<label asp-for="Name">Full Name *</label>
-									<input type="text" asp-for="Name" class="form-control" placeholder="Full Name">
-									<span asp-validation-for="Name" style="color:red; font-size:14px;"></span>
-								</div>
-							</div>
+                    <div class="card-body p-5">
+                        <form asp-controller="Account" asp-action="Register" method="post">
+                            <div class="mb-3">
+                                <label asp-for="Name" class="form-label fw-semibold">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="fas fa-user text-muted"></i>
+                                    </span>
+                                    <input type="text" asp-for="Name" class="form-control border-start-0" placeholder="Enter your full name">
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger small mt-1 d-block"></span>
+                            </div>
 
-							<div class="form-group">
-								<label asp-for="Email">Email *</label>
-								<input type="email" id="email" asp-for="Email" class="form-control" placeholder="Email*">
-								<span asp-validation-for="Email" style="color:red; font-size:14px;"></span>
-							</div>
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label fw-semibold">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="fas fa-envelope text-muted"></i>
+                                    </span>
+                                    <input type="email" asp-for="Email" class="form-control border-start-0" placeholder="Enter your email">
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+                            </div>
 
-							<div class="row">
-								<div class="form-group col-md-6">
-									<label asp-for="Password">Password *</label>
-									<input type="password" asp-for="Password" class="form-control" placeholder="Password*">
-									<span asp-validation-for="Password" style="color:red; font-size:14px;"></span>
-								</div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Password" class="form-label fw-semibold">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password" asp-for="Password" class="form-control border-start-0 password-input" placeholder="Create password">
+                                        <button type="button" class="input-group-text toggle-password bg-light border-start-0">
+                                            <i class="fas fa-eye text-muted"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger small mt-1 d-block"></span>
+                                </div>
 
-								<div class="form-group col-md-6">
-									<label>Confirm Password *</label>
-									<input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password*">
-									<span asp-validation-for="ConfirmPassword" style="color:red; font-size:14px;"></span>
-								</div>
-							</div>
-							<div class="form-group">
-								<span style="color:#d9534f; font-weight:bold;">
-									Note: Password must be strong and contain at least
-									<span style="color:#5bc0de;">one uppercase</span>,
-									<span style="color:#5cb85c;">one lowercase</span>,
-									<span style="color:#f0ad4e;">one number</span>, and
-									<span style="color:#d9534f;">one special character</span>.
-								</span>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password" asp-for="ConfirmPassword" class="form-control border-start-0 password-input" placeholder="Confirm password">
+                                        <button type="button" class="input-group-text toggle-password bg-light border-start-0">
+                                            <i class="fas fa-eye text-muted"></i>
+                                        </button>
+                                    </div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 d-block"></span>
+                                </div>
+                            </div>
 
-							</div>
-							<div class="form-group">
-								<button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Sign Up</button>
-							</div>
-						</form>
-				
+                            <div class="alert alert-info bg-light border-0 small mb-4">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-info-circle me-2 text-primary"></i>
+                                    <strong>Password Requirements:</strong>
+                                </div>
+                                <ul class="mb-0 mt-2 ps-3">
+                                    <li>At least <span class="text-primary">one uppercase letter</span></li>
+                                    <li>At least <span class="text-success">one lowercase letter</span></li>
+                                    <li>At least <span class="text-warning">one number</span></li>
+                                    <li>At least <span class="text-danger">one special character</span></li>
+                                </ul>
+                            </div>
 
-                    <p class="mt-4 text-center text-muted small">
-                        Already verified?
-                        <a asp-controller="Account" asp-action="Login" class="text-primary fw-bold">Login here</a>
-                    </p>
+                            <div class="d-grid mb-4">
+                                <button type="submit" class="btn btn-primary btn-lg fw-semibold py-2">
+                                    <i class="fas fa-user-plus me-2"></i>Create Account
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="text-center pt-3 border-top">
+                            <p class="text-muted mb-0">
+                                Already have an account?
+                                <a asp-controller="Account" asp-action="Login" class="text-primary fw-bold text-decoration-none">Sign In</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        }
+
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .input-group-text {
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+    .alert-info {
+        border-left: 4px solid #667eea;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle password visibility
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.closest('.input-group').querySelector('.password-input');
+                const icon = this.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // Add real-time password strength feedback
+        const passwordInputs = document.querySelectorAll('.password-input');
+
+        passwordInputs.forEach(input => {
+            input.addEventListener('input', function() {
+                const password = this.value;
+                const strengthIndicator = this.closest('.mb-3').querySelector('.password-strength');
+
+                if (!strengthIndicator) {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'password-strength mt-2';
+                    this.closest('.mb-3').appendChild(indicator);
+                }
+
+                updatePasswordStrength(password, strengthIndicator);
+            });
+        });
+
+        function updatePasswordStrength(password, indicator) {
+            let strength = 0;
+            const requirements = [
+                /[A-Z]/, // uppercase
+                /[a-z]/, // lowercase
+                /[0-9]/, // numbers
+                /[^A-Za-z0-9]/ // special characters
+            ];
+
+            requirements.forEach(req => {
+                if (req.test(password)) strength++;
+            });
+
+            const strengthText = ['Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
+            const strengthColors = ['danger', 'warning', 'info', 'primary', 'success'];
+
+            if (indicator) {
+                indicator.innerHTML = `
+                    <div class="progress mb-1" style="height: 4px;">
+                        <div class="progress-bar bg-${strengthColors[strength]}" style="width: ${(strength/4)*100}%"></div>
+                    </div>
+                    <small class="text-${strengthColors[strength]}">${strengthText[strength]}</small>
+                `;
+            }
+        }
+    });
+</script>

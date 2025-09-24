@@ -15,7 +15,12 @@
 						<ul>
 							@foreach (var category in Model.Categories)
 							{
-								<li><a href="javascript:void(0);">@category.Name</a></li>
+								<li>
+									<a asp-controller="Showcatrgoryall" asp-action="Showcategory" asp-route-id="@category.Id">
+										@category.Name
+									</a>
+
+									</li>
 							}
 						</ul>
 					</div>
@@ -26,7 +31,7 @@
 				<div class="home-slider auto-slider mb-3 mt-3">
 
 					<!-- Slide -->
-					<div data-background-image="@Url.Content("~/asset/frontend/img/light-banner-1.png")" class="item">
+					<div data-background-image="@Url.Content("~/asset/frontend/img/Banner1.jpg")" class="item">
 						<div class="container">
 							<div class="row">
 								<div class="col-md-12">
@@ -40,7 +45,7 @@
 												<span class="trending">Apple 10 comes with 6.5 inches full HD + High Valume</span>
 											</div>
 
-											<a href="#" class="btn btn-white stretched-link hover-black">Buy Now<i class="lni lni-arrow-right ml-2"></i></a>
+											<!-- <a href="#" class="btn btn-white stretched-link hover-black">Buy Now<i class="lni lni-arrow-right ml-2"></i></a>-->
 										</div>
 										<!-- Slide Title / End -->
 
@@ -51,7 +56,7 @@
 					</div>
 
 					<!-- Slide -->
-					<div data-background-image="@Url.Content("~/asset/frontend/img/light-banner-2.png")" class="item">
+					<div data-background-image="@Url.Content("~/asset/frontend/img/Banner2.jpg")" class="item">
 						<div class="container">
 							<div class="row">
 								<div class="col-md-12">
@@ -65,7 +70,7 @@
 												<span class="trending">Xiomi Redmi 10 comes with 6.5 inches full HD + LCD Screen</span>
 											</div>
 
-											<a href="#" class="btn btn-white stretched-link hover-black">Shop Now<i class="lni lni-arrow-right ml-2"></i></a>
+											<!-- <a href="#" class="btn btn-white stretched-link hover-black">Shop Now<i class="lni lni-arrow-right ml-2"></i></a>-->
 										</div>
 										<!-- Slide Title / End -->
 
@@ -76,7 +81,7 @@
 					</div>
 
 					<!-- Slide -->
-					<div data-background-image="@Url.Content("~/asset/frontend/img/light-banner-3.png")" class="item">
+					<div data-background-image="@Url.Content("~/asset/frontend/img/b-8.png")" class="item">
 						<div class="container">
 							<div class="row">
 								<div class="col-md-12">
@@ -90,7 +95,7 @@
 												<span class="trending">Xiomi Redmi 10 comes with 6.5 inches full HD + LCD Screen</span>
 											</div>
 
-											<a href="#" class="btn theme-bg text-light">Shop Now<i class="lni lni-arrow-right ml-2"></i></a>
+											<!-- <a href="#" class="btn theme-bg text-light">Shop Now<i class="lni lni-arrow-right ml-2"></i></a>-->
 										</div>
 										<!-- Slide Title / End -->
 
@@ -192,8 +197,8 @@
 			{
 				<div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-4">
 					<div class="cats_side_wrap text-center mx-auto mb-3">
-						<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a href="javascript:void(0);" class="d-block"><img src="data:image/png;base64,@Convert.ToBase64String(category.Image)" class="circle " width="100" alt="@category.Name"></a></div></div>
-					<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a href="javascript:void(0);">@category.Name</a></h6></div>
+						<div class="sl_cat_01"><div class="d-inline-flex align-items-center justify-content-center p-4 circle mb-2"><a asp-controller="Showcatrgoryall" asp-action="Showcategory" asp-route-id="@category.Id" " class="d-block"><img src="data:image/png;base64,@Convert.ToBase64String(category.Image)" class="circle " width="100" alt="@category.Name"></a></div></div>
+						<div class="sl_cat_02"><h6 class="m-0 ft-medium fs-sm"><a asp-controller="Showcatrgoryall" asp-action="Showcategory" asp-route-id="@category.Id" ">@category.Name</a></h6></div>
 				</div>
 			</div>
 			}

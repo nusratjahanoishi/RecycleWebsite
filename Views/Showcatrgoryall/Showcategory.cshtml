@@ -1,0 +1,80 @@
+﻿@model NextUses.Models.ViewModel.FrontendModel
+@{
+	ViewData["Title"] = "Category Paroduct Page";
+	Layout = "_FrontendLayout";
+}
+
+<section class="middle">
+	<div class="container">
+
+		<div class="row justify-content-center">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+				<div class="sec_title position-relative text-center">
+					<h2 class="off_title">Category Products</h2>
+					<h3 class="ft-bold pt-3">Category All Products</h3>
+				</div>
+			</div>
+		</div>
+
+		<div class="row align-items-center rows-products">
+			@if (Model.Products != null && Model.Products.Any())
+{
+			@foreach (var product in Model.Products)
+			{
+				<!-- Single -->
+				<div class="col-xl-3 col-lg-4 col-md-6 col-6">
+					<div class="product_grid card b-0">
+						<div class="badge bg-red text-white position-absolute ft-regular ab-left text-upper">
+							@product.ProductStatus
+						</div>
+						<div class="card-body p-0">
+							<div class="shop_thumb position-relative">
+								<a class="card-img-top d-block overflow-hidden"
+								   asp-controller="Frontend"
+								   asp-action="Productdetails"
+								   asp-route-id="@product.Id">
+									<img class="img-fluid"
+										 style="width:2500px; height:250px; object-fit:cover;"
+										 src="data:image/png;base64,@Convert.ToBase64String(product.Image)"
+										 alt="@product.Name" />
+								</a>
+							</div>
+						</div>
+						<div class="card-footer b-0 p-0 pt-2 bg-white d-flex align-items-start justify-content-between">
+							<div class="text-left">
+								<div class="elso_titl">
+									<span class="small">@product.Category.Name</span>
+								</div>
+								<h5 class="fs-md mb-0 lh-1 mb-1">
+									<a href="shop-single-v1.html">@product.Name</a>
+								</h5>
+								<div class="elis_rty">
+									<span class="ft-bold text-dark fs-sm">TK- @product.Price</span>
+								</div>
+							</div>
+							<div class="text-right">
+								<h3 class="fs-md mb-0 lh-1 mb-1 mt-3">
+									<a asp-controller="Frontend"
+									   asp-action="Productdetails"
+									   asp-route-id="@product.Id"
+									   class="btn btn-primary btn-sm px-4 py-2">
+										Details
+									</a>
+								</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+			}
+			else
+			{
+				<div class="col-12 text-center">
+					<h4>No products found in this category.</h4>
+				</div>
+			}
+		</div>
+
+
+	</div>
+</section>

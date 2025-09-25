@@ -5058,3 +5058,34 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     background-color:#ffffff;
     color:#333c56;
 }
+/* Dark Mode */
+html.dark, body.dark {
+    background-color: #2E3239 !important; /* softer dark gray */
+    color: #EAEAEA !important;
+}
+
+
+    /* Card */
+    body.dark .card {
+        background-color: #2C2C2C !important; /* medium gray */
+        color: #EAEAEA !important;
+    }
+
+    /* Header/Footer/Navbar */
+    body.dark .header,
+    body.dark .footer,
+    body.dark .headd-sty,
+    body.dark .headerd,
+    body.dark .navigation {
+        background-color: #242526 !important; /* softer gray-black */
+        color: #EAEAEA !important;
+    }
+
+    /* Links */
+    body.dark a {
+        color: #EAEAEA !important;
+    }
+
+        body.dark a:hover {
+            color: #FF9800 !important;
+        }

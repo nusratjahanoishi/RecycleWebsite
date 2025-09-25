@@ -22,6 +22,7 @@ namespace NextUses.Data
         public DbSet<ProductGallery> ProductGalleries { get; set; }
         public DbSet<RiderApplication> RiderApplications { get; set; }
         public DbSet<GeneralSetting> GeneralSettings { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
